@@ -1,0 +1,364 @@
+<!DOCTYPE html><html lang="fr-FR">
+
+<head>
+    <meta charset="UTF-8" /><meta http-equiv="X-UA-Compatible" content="IE=edge" /><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" /><title>CAS - Central Authentication Service Connexion</title>
+    
+        <link rel="stylesheet" type="text/css" href="/cas/webjars/normalize.css/8.0.1/normalize-112272e51c80ffe5bd01becd2ce7d656.css" /><link rel="stylesheet" type="text/css" href="/cas/webjars/bootstrap/5.3.3/css/bootstrap-grid.min-ea688188986141f98fe7c673dd4c34f1.css" /><link rel="stylesheet" type="text/css" href="/cas/webjars/material-components-web/14.0.0/dist/material-components-web.min-9da9033e8d04504fe54b3dbb1298fd78.css" /><link rel="stylesheet" type="text/css" href="/cas/webjars/mdi__font/7.4.47/css/materialdesignicons.min-2c83c4bce691e18f82409f87b2bf84e4.css" /><link rel="stylesheet" type="text/css" href="/cas/webjars/datatables/2.1.8/css/dataTables.dataTables-dd4fd70bec3081bf43eaf1b44606825c.css" /><link rel="stylesheet" type="text/css" href="/cas/themes/uca/css/cas-6dcea2c4fe9b269388fea4c6184340f0.css?20241219" /><link rel="shortcut icon" href="https://ent.uca.fr/cas/themes/uca/favicon.ico" /></head>
+
+<body class="login mdc-typography">
+    <script type="text/javascript" src="/cas/webjars/jquery/3.7.1/jquery.min-2c872dbe60f4ba70fb85356113d8b35e.js"></script>
+<script type="text/javascript" src="/cas/webjars/datatables/2.1.8/js/dataTables-70b9a6f161388f3ced03204fa161bea0.js"></script>
+<script type="text/javascript" src="/cas/webjars/clientjs/0.2.1/dist/client.min-5b6a46b3fb2ab9307d013def98fd7289.js"></script>
+
+<script type="text/javascript" src="/cas/webjars/es5-shim/4.5.9/es5-shim.min-136920ce3d575efb89300c3c277555fb.js"></script>
+    <script type="text/javascript" src="/cas/webjars/css-vars-ponyfill/2.4.9/dist/css-vars-ponyfill.min-d95555bf007fcdda849a37d9714463b7.js"></script>
+    <script type="text/javascript" src="/cas/webjars/material-components-web/14.0.0/dist/material-components-web.min-3c99031127092dd1984f2e3aa6aeed8b.js"></script>
+<script type="text/javascript" src="/cas/themes/uca/js/cas-42b8c7a72b444b553165b8076d99e720.js?20241219"></script>
+<script>
+    if (typeof resourceLoadedSuccessfully === "function") {
+        resourceLoadedSuccessfully();
+    }
+    $(() => typeof cssVars === "function" && cssVars({onlyLegacy: true}));
+    let trackGeoLocation = false;
+</script>
+
+<div>
+
+    <header id="app-bar" class="mdc-top-app-bar mdc-top-app-bar--fixed mdc-elevation--z4 shadow-sm">
+        <nav class="mdc-top-app-bar__row navbar navbar-dark bg-dark">
+            <div class="container-fluid container-fluid d-flex align-items-center justify-content-between">
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-start">
+                    </section>
+                <section class="mdc-top-app-bar__section">
+                    <div class="cas-brand mx-auto">
+                        <h1 class="visually-hidden">CAS</h1>
+                        <a href="/cas/">
+                            <img id="cas-logo" class="cas-logo"
+                                 alt="CAS"
+                                 src="/cas/images/cas-logo-da0f65648a95f6a278fca5afd64ef0c6.png"
+                            /></a>
+                    </div>
+                </section>
+                <section class="mdc-top-app-bar__section mdc-top-app-bar__section--align-end">
+                    </section>
+            </div>
+        </nav>
+    </header>
+
+    <div id="logindrawer">
+        </div>
+
+    <script>let countMessages = 0;</script>
+    <script type="text/javascript">
+        function supportsCookies() {
+            try {
+                document.cookie = 'testcookie=1';
+                const ret = document.cookie.indexOf('testcookie=') !== -1;
+                document.cookie = 'testcookie=1; expires=Thu, 01-Jan-1970 00:00:01 GMT';
+                return ret;
+            } catch (e) {
+                console.log(e);
+                return false;
+            }
+        }
+        document.addEventListener('DOMContentLoaded', () => {
+            if (!supportsCookies()) {
+                countMessages++;
+                window.jQuery('#cookiesSupportedDiv').show();
+            }
+
+            if (countMessages === 0) {
+                window.jQuery('#notifications-count').remove();
+                window.jQuery('#cas-notifications-menu').remove();
+            } else {
+                window.jQuery('#notifications-count').text(`(${countMessages})`)
+            }
+        });
+    </script>
+</div>
+
+    <div class="mdc-drawer-scrim"></div>
+
+    <div class="mdc-drawer-app-content mdc-top-app-bar--fixed-adjust d-flex justify-content-center">
+        <main id="main-content" class="container-lg py-4">
+            <div id="content" class="d-flex justify-content-center">
+   <div class="d-flex justify-content-center flex-md-row flex-column mdc-card mdc-card-content card flex-grow-1">
+
+       <section id="loginForm"
+                 class="login-section login-form card-body">
+            <div class="d-flex flex-column justify-content-between m-auto">
+
+        <div>
+            <div id="serviceui"
+         class="banner banner-info mb-4 text-justify">
+        <div class="d-flex align-items-center pr-2">
+            <div id="servicedesc" class="ml-2">
+                <strong><i class="mdi mdi-web" aria-hidden="true"></i>UCA</strong>
+                <p>This service definition authorized all application urls that support HTTP(S) protocols on uca.fr.</p>
+                </div>
+        </div>
+    </div>
+        </div>
+
+        <div class="form-wrapper">
+
+            <form method="post" id="fm1" action="login" onsubmit="loginFormSubmission();">
+                <div id="login-form-controls">
+                    <h2 class="text-center">
+                        <i class="mdi mdi-login fas fa-shield-alt" aria-hidden="true"></i>
+                        <span>Service d'authentification</span>
+                    </h2>
+
+                    <section class="cas-field form-group my-3" id="usernameSection">
+                        <label for="username"
+                               class="mdc-text-field mdc-text-field--outlined control-label w-100">
+                            <span class="mdc-notched-outline">
+                                <span class="mdc-notched-outline__leading"></span>
+                                <span class="mdc-notched-outline__notch">
+                                    <span class="mdc-floating-label">Identifiant</span>
+                                </span>
+                                <span class="mdc-notched-outline__trailing"></span>
+                            </span>
+                            <input class="mdc-text-field__input form-control" id="username"
+                                   size="25"
+                                   type="text"
+                                   accesskey="i"
+                                   autocapitalize="none"
+                                   spellcheck="false"
+                                   autocomplete="username" required name="username" value="" /></label>
+
+                        <div class="mdc-text-field-helper-line invalid-feedback">
+                            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                                <span id="usernameValidationMessage">Vous devez entrer votre identifiant.</span>
+                            </div>
+                        </div>
+
+                        <script type="text/javascript">
+                            /*<![CDATA[*/
+                            let username = "";
+                            let disabled = false;
+
+                            if (username != null && username !== '') {
+                                $('#username').val(username);
+                                if (disabled) {
+                                    $('#usernameSection').hide();
+                                }
+                            }
+                            /*]]>*/
+                        </script>
+                    </section>
+
+                    <section class="cas-field form-group my-3 mdc-input-group form-group" id="passwordSection">
+                        <div class="mdc-input-group-field mdc-input-group-field-append">
+                            <label for="password"
+                                   class="mdc-text-field caps-check mdc-text-field--outlined control-label mdc-text-field--with-trailing-icon control-label w-100">
+                                    <span class="mdc-notched-outline">
+                                        <span class="mdc-notched-outline__leading"></span>
+                                        <span class="mdc-notched-outline__notch">
+                                            <span class="mdc-floating-label">Mot de passe</span>
+                                        </span>
+                                        <span class="mdc-notched-outline__trailing"></span>
+                                    </span>
+                                <input class="mdc-text-field__input form-control pwd"
+                                       type="password"
+                                       id="password"
+                                       size="25"
+                                       required
+                                       accesskey="m"
+                                       autocomplete="off" name="password" value=""/><button
+                                        class="reveal-password mdc-button mdc-button--unelevated mdc-input-group-append mdc-icon-button btn btn-primary"
+                                        tabindex="-1" type="button" title="Afficher/masquer le mot de passe">
+                                    <i class="mdi mdi-eye reveal-password-icon fas fa-eye" aria-hidden="true"></i>
+                                </button>
+                            </label>
+                            <div class="mdc-text-field-helper-line invalid-feedback">
+                                <div class="mdc-text-field-helper-text mdc-text-field-helper-text--validation-msg" aria-hidden="true">
+                                    <span id="passwordValidationMessage">Vous devez entrer votre mot de passe.</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="mdc-text-field-helper-line invalid-feedback caps-warn">
+                            <div class="mdc-text-field-helper-text mdc-text-field-helper-text--persistent mdc-text-field-helper-text--validation-msg text-danger">
+                                <span >La touche Verr. Maj. est activée !</span>
+                            </div>
+                        </div>
+                    </section>
+
+                    <section class="cas-field form-group my-3">
+                        </section>
+
+                    <section class="cas-field form-check">
+                        <div class="mdc-form-field ">
+                            <th:div>
+        <div id="warnSwitchButtonPanel" style="display: none">
+            <button id="warnButton" name="warnButton"
+                    class="mdc-switch mdc-switch--unselected"
+                    type="button" role="switch" aria-checked="false">
+                <div class="mdc-switch__track"></div>
+                <div class="mdc-switch__handle-track">
+                    <div class="mdc-switch__handle">
+                        <div class="mdc-switch__shadow">
+                            <div class="mdc-elevation-overlay"></div>
+                        </div>
+                        <div class="mdc-switch__ripple"></div>
+                        <div class="mdc-switch__icons">
+                            <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
+                                <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" /></svg>
+                            <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
+                                <path d="M20 13H4v-2h16v2z" /></svg>
+                        </div>
+                    </div>
+                </div>
+                <span class="mdc-switch__focus-ring-wrapper">
+                    <div class="mdc-switch__focus-ring"></div>
+                </span>
+            </button>
+            <label class="form-check-label" id="warnButtonLabel"><span class="accesskey">P</span>révenez-moi avant d’accéder à d’autres services.</label>
+            <input type="hidden" name="warn" id="warn" value="false" data-switch-btn="warnButton"/></div>
+        <div id="warncheckBoxPanel" class="form-check form-switch" style="display: none">
+            <input type="checkbox" class="form-check-input" id="warn" name="warn" /><label class="form-check-label" for="warn" id="warnButtonLabel"><span class="accesskey">P</span>révenez-moi avant d’accéder à d’autres services.</label>
+        </div>
+
+        <script>
+            /*<![CDATA[*/
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof mdc === 'undefined' || mdc === undefined) {
+                    $("#warnSwitchButtonPanel").hide().empty();
+                    $("#warncheckBoxPanel").show();
+                } else {
+                    $("#warnSwitchButtonPanel").show();
+                    $("#warncheckBoxPanel").hide().empty();
+                }
+            });
+            /*]]>*/
+        </script>
+    </th:div>
+                        </div>
+                        <p/></section>
+
+                    <section class="cas-field form-check">
+                        <div class="mdc-form-field ">
+                            <th:div>
+        <div id="publicWorkstationSwitchButtonPanel" style="display: none">
+            <button id="publicWorkstationButton" name="publicWorkstationButton"
+                    class="mdc-switch mdc-switch--unselected"
+                    type="button" role="switch" aria-checked="false">
+                <div class="mdc-switch__track"></div>
+                <div class="mdc-switch__handle-track">
+                    <div class="mdc-switch__handle">
+                        <div class="mdc-switch__shadow">
+                            <div class="mdc-elevation-overlay"></div>
+                        </div>
+                        <div class="mdc-switch__ripple"></div>
+                        <div class="mdc-switch__icons">
+                            <svg class="mdc-switch__icon mdc-switch__icon--on" viewBox="0 0 24 24">
+                                <path d="M19.69,5.23L8.96,15.96l-4.23-4.23L2.96,13.5l6,6L21.46,7L19.69,5.23z" /></svg>
+                            <svg class="mdc-switch__icon mdc-switch__icon--off" viewBox="0 0 24 24">
+                                <path d="M20 13H4v-2h16v2z" /></svg>
+                        </div>
+                    </div>
+                </div>
+                <span class="mdc-switch__focus-ring-wrapper">
+                    <div class="mdc-switch__focus-ring"></div>
+                </span>
+            </button>
+            <label class="form-check-label" id="publicWorkstationButtonLabel">Je suis sur un ordinateur public.</label>
+            <input type="hidden" name="publicWorkstation" id="publicWorkstation" value="false" data-switch-btn="publicWorkstationButton"/></div>
+        <div id="publicWorkstationcheckBoxPanel" class="form-check form-switch" style="display: none">
+            <input type="checkbox" class="form-check-input" id="publicWorkstation" name="publicWorkstation" /><label class="form-check-label" for="publicWorkstation" id="publicWorkstationButtonLabel">Je suis sur un ordinateur public.</label>
+        </div>
+
+        <script>
+            /*<![CDATA[*/
+            document.addEventListener('DOMContentLoaded', () => {
+                if (typeof mdc === 'undefined' || mdc === undefined) {
+                    $("#publicWorkstationSwitchButtonPanel").hide().empty();
+                    $("#publicWorkstationcheckBoxPanel").show();
+                } else {
+                    $("#publicWorkstationSwitchButtonPanel").show();
+                    $("#publicWorkstationcheckBoxPanel").hide().empty();
+                }
+            });
+            /*]]>*/
+        </script>
+    </th:div>
+                        </div>
+                        <p/></section>
+
+                    <section class="cas-field">
+                        <input type="hidden" name="execution" value="2feb34c6-098e-4f52-8e5f-30bf06890ea4_ZXlKaGJHY2lPaUpJVXpVeE1pSXNJblI1Y0NJNklrcFhWQ0lzSW10cFpDSTZJamsxWlRnME0yTXpMVFEzTkRVdE5EUmlPUzA0WlRFMkxXRTNNRE5oTjJJMVlqWXhPQ0o5Llp0SGJaN005ckRfc05kMTNaS0JUdkV6amJPenJ6VU9ZcnBKeUpJUDFGR0NxSk5Ca0dkUUQ5S285OElTcnhRVjFhYTRiTEFkQkVmYm9VSnRNd1I2U18zX3ZLX1dyYzRJaVZkcWh5THF4Mjh1SGFvbUtMOEJKaDZEZUVGT2JJc3U2ekhUOEh5dmFmVnhvTWVSOHdhRm1VMzMwcDAxelRDQXdJaVZfeDJEendiLWljQkltMkdsQVQtYk1teE1rS3Rkb1ExTEhBMW9mY3d5cVpfV0diNGJ1QmtFZnRQdUF3cDBTa0EyQUFYOUxjVVp5MGh6cGFtS2UwOFRMQUdrRW1WUU5xNVF6UTZwTXRhbTZGYk1id2lHR2JBSU52QVlaeG1QdkdHNWQwZWVUajYwdkdIVE1MQkJrcTFXRFZwT3BoQ2puVjh1bUVHY2pwdF9JdVpMLW5OekFJTW9laDdHMGpTTkp6YWhNdVA0ZU5ZX3RtUFBTVnpYYVF6dTBTVFZsa3k4SUxud3cwYVAtMlkyVS1WaV9qdFl4cmx0ZUVrV0d0NElPcnZwV3pub28xMFJzR21YV2wwZnBmT3FndmpNMXAtNWI0UF93VEQ4enc3M3N5S0xUME9RX2NxSjRzLW13SnFCOUUwOHlIUkJHeTZBa01NN2VKM0szTW5aZmlDcWR3VWlpaURncFYxLW8tdzJEU002dkJmVWJ0SUFkZWFINUkycEN4LUpQREYzSzV1QzJFRE1UbGVFbXAwQmQtWU81anlRMjJoMEdtVFRmUXMwWWRvN0UzUGNtdi13cVRlc2pCX3ByUzZ4eThELW90T3lmTVYxNnpqLTdxY0djVFNmMU9YdjIwS1dBOUp1aXlGQkdqUmtJUThVQWtKc1ZPanZ4Njhod3owRGExcUc4Ni05OTk2bFk5a3FEU3NzRVNoenRhUVloSlM2RjhMOGZZVXNvMnBnY0hmYnZ3V1I2NUJzREMxSUR1Rl9taUJYdGhqaE5XVm9WaUVCMlY0Ry0zNVJNNENOTlR1NFNrWTFrZ0VXNkVUa0VadVNJNXVRVTZqbjhZeUhMaVFlMDFsbzQzZEp5SGw0VjlSb1hZaG02ckp0TklCNHk4M0E5QzVXeERVODBBZDFWa2RQc2dVYXNCVndtZUlUR2kySUVHWmFCS0hZZUM5cTJwRjQtbF80ekxuQ2J5aDJqWDl0VElXM3RjbjFRXzd5ZzA3amNvYURKeFVDbldSR2JOYmV1ZlFFTjA4QUJENGRjWW1lVXBSN2kwWWFWMkhUQ2otT3dFLVNqdWtJR05FN09DZkdFQ0IwZm80a1FGUm9qTVJrdTZMLTM5OXpRMVV2WXlZQk5Sc2JZeVIzVGtjU0lmM0Y0UmF0aWtOeWtvV3puMF85ODQ5SUtlczBlVHdiX05rUGl2RVVxdWw0SE1nUUdCSFl2S2VTdktiWmhmZzBsbWVHNVJxZnpoek5YWC1lRmJJbW1tbnBaVDQwUjh5NDFWSUNTT0lGRmhKNE1WSTNpaFU2T0t0Z2Q3dHA0LW1EY09lU00xb2JSYkhlSldyM0RkQ0pBX0ZxYjhRZmV3QnZDUUVxVmRNckYydEx4MVVSOG5vcl9UTzB1Q0JTSFNjYlY2SEZUcWhiQm1TV1F4SWNyVC1fREF0UDQxRThja01kRVl4dHgybnNIdFBoU25pZVJjelBTdDBpMDhvMUk1ckdkYWNCaXFNdmdRNm1HZFJVbXZRSGNQNUtlUno4dVoyZEZFLU41dVpXS1U4b1VrMDVJcTl5emI3SGZ1NHlVQ09Cb21SUWV4YXdVMHp1WHcyT0JKaVpXX01HNmZUd1NJd3c4NVFZQ1kzSUVDUWR5ZTJTU1FuaWhTTjVyR2RvNFFLa2M5c2FybXpDdXdNUXM2akxQT3pfUi1ZS1J6Q1RHX2tKb1gwcnFMeFlHemk3bTZHWjdkczFzaFA5eUxnRUdObWdvMTNzNXBaeDZkYlVkRWNxVmFnOWV6Yl9tMldJZmtSY3JrRm9URS1YeGlvc1NaTEFvT2FBckJxeHh4dHc2T3F3NU96NUpTSFRTU0o4Ylg5WjFaTHZiOUZXZ1g0OUtPMS1QOVpFVTg4U2FXQTJzNFV1THJDa2huQ1I4Mlo2M2R5dHZIV0N0ZXpDT1dHZWo2azlIbnlVTHRGcHV1MGRPT3pKSURxYXFwNkpLQmV3ZlI5Z2g0N2dTbTF2aUxMalZ2dVVxVzNielpVRklKTWVXd0Yxa2U0cDJKS3ZraTcyanhKcFJSajh4MkFKa3U5Y2FnSW5VM25YaDkzTlFOVmlGNkZzVHFNcmVlcEU4dlNxbDh6bUlhZ0VpNVpfOWhMSFFYdmxYd2laNE5iVmR5Uko2b091TGNBY09qMU9fSjNwbTFHejMzajBQZ01jNDJkRXUyRlRFZmZYNEl0UVNITENEV1g1YU9Jd05TRHZiQjlEaWJNckJMeVI5UWMySDJxTWYwRjRvenpzTDB1YXlTRGlSZHk3ZVBvX211U0NNaVdCZkRFZm5FdmhGS3VoUFlWeWlha256Sk9sUFFqb01kR2FKTkxvN0NZSmpyQVpUa1NYM1RzQTl1cjFwSEZ6X0xCc3lnbURSeE1fdkM2cVRlOFk3VUJselg1N1VSeGQ4M1N5Vi15Wm1QYkxHbXFuaThza1ZqUjRqM1ZJNkxOY1QzZUdrQk9MUzFOdVN0eklLVmZhRUhCWkRlaEFYUVVFaUE3dDBqalJnbEZCdTktY2dNN3lBNUpxUzdhLWlyOTdxeVhQek9zdkd3ZHBLZF9sSzJXRTh0dl9qNlgxQ3pyU3BwSmJUY1ZDN2VyRFZ1dDkyYlhob2ZwZEdlN29aZURRd1NJN2RrbFZhRi1yc0s5NEItRURINUFUaWZKLUpKdzJGTjduM2JMTHNJSjNmdTNJa0d2R3RnVVI0Mi1IYVdWS095TTFwMVk2OHItVGtiMDR4VVRRM2RCWXNIcTV4ZE5CWjY2eGVMMExzYzhVQmZEY1k5Y0dFMGVweHEtS0twc2w0SUtzQWpXMml2Qmd4RDhWMFc4ZUw2ZUMzaUJ3SzZYVDhROF96V0tuTTZ3dTQtSm1VMG5VMTQzcExELTZuZDJEaXJIeGRZSk1oem1uWHhyaW9fTWtqSTdCalFpeFVoZElOY2p2S0ZMalRfRjRhc3V5ZW53U3pPTDdZTHNWQmlNclhQaDNjLUtxWFlGS1hnc0ZZeEFiMWVfNlpudTZlUUJncm1ZNGxKeFlNWENJR3J5QzNWVFlhT3FoLU9hYXZ2NG5sWU1uLXdrQzdreTNPQ1dXNzNZcVhsYzVyWWJRX1FFRFFXV0N2Y2theDJ2OGdsaWF5M0YyRkZNMUI3Y25iY3BNRVczMkhBSjB0NVh3U3hOZkFrSVA0M2RTOWROMngxVkJQT1p0Vms4RjFuRW9XMTU2VDVXbU8wR0RpWU91cFI4RzJaRDV3dlJ6cHhaMUY4Z1ZRLW9ORFY4WlAzWVJPTEVkbmNqRTdPSF9keWVEa1U4Ylc1OXhVUnhhYWdtcW9CSUM4enZKYUtDcFlZWnRGM0pNX09Fak83am9Mc2pTVVJwelhXTmszVmR2WVdIaS1kbmh0U1p0aHp3ckJSRjFNeEFaTHZiZWM4a1FSa0dGaEhmd3VNa2hJYXhlTDExSzNKSlRJdGoyaFJNYXpkWU1xbTF3b3ZkQ1Q2QlI0Xzl3UVFTXzQ1WUp1dnBuNW1ra24xTEs1LUdtQktyZlQzYV9UXzVCdjFSVlNRX1dYTEYwZHE0QXJyMnFaNm1CT1BQTzFDRl9td25aMnZBM2pPSmlBOE9TUlZQZDFTbjZVTUp5d3BZQWVDcmtRS1phTm9BdDUyWVNWc1VEWHZfRjlEU2V1eVFON2plRHJBbHpzZnN5dHR5SnFoZGY3WW5NTkZ2ZEF6dFBVcjJYaFVCSW5xRDFlcDd4ZnMycVpfb09zN3JGSlJ0eUYxZVM2SlMxQ3BIejM1bUlUbmtRM2FtaGlWMFhtQlpvUW9rTXVDTTdyOGo3THFMWjF4aDE3UHg2RHpFYXZ0UDBNZmJWY3ZrMWRSMnJua1VaNHE0NjBCZXRGNFhwa0paRzNYOEwyN1FhUDBOSkoyTDRYaDUzaHd4dV82V2pGb2VVZFhOWDR3Rk4zVlc1aDNDbDZMajhhN0xVZVRqdnctMmhkTV9RMXhQLXFWV3c4RnFqaGZOXzFSU19ma1RGUTYzWGxMdnlDazVqeVdxZmVoTUZEVzQzRWhQZnZhdXZRcnZZLTR6Q0JPN05uUEF4SUdkNFhNUl9pMm50NmRGYjZUcmM1b2VRbjNENGFsYTJLM21HdlNVRXlNT014dXY2d3lQMjFUZTBFUF9NbjRpelNjZUprX2ZtOHhTSV9sa2dUeWg2T01BaTNkaHRYaTJpbUNEcUVNWmFpY2MxcTJyUktHN3Zsck1ZVGJ6R05KTWlibUgtcnA2a1NUQmh6VGNGTlRiQ3JUWGswM3BodkliQlNTYjNmV2UyclRKODJxaERSYm00R3VueHNHQS1scmhwb3d1MDI3RGpvdjZLTVhYR0RVSXNmV0JCUG9aNW10N2h6S243WWtjX09pczNyWjM4VXFueUpvdnFxdGNneDNtMm15Q08zR2txNXVENTJnRkFzeDJDdWsxRmZlSUhrMHFkbldTSkw2Umd1NGFfU2x4bzZjZWYwU0RlR3I5bGhpNTNaeGViMXJUTzk3aUxUMEhuNGJlYVZlT1V6NDU3Y2ZVWEpHLW4yaWZ0cXVLUFRtdHNCOU1kSnpOYW5XN2dyc2pFZFVSTHpmX1B3OTV5QUZjdXYwTGRKd0QwNXFjem9uUXU5VWI5SWk3YlpydVBWejZpdEM0bjI1UkFSdDdnVVNiU2tENnpuODZrUTd0b19idVBlWVFtc2hrazA3b2ZDaURmUVozVzRxRVRhXzBYcUQyWVpEZmV4SlNVV3Fwa0hXM2lOZGJuUmpTc3lFRFZnbWV0OEZ0bHRWb1lCOHc2cWh4VzFXM1Q1aTdjN0hRQVk2cUNJS0hGSFFCcTY5S25xX2hKVUpISXhaM0Nudm5FYWYwaVdjS0U3aVVsb2tsTjRDejJqQVhrTTg1N3hZWXBsR1hoRVY2aDc0Q0xRNktRbG0wZXZhQk9yOE1jWEdjUmhKN2FONlUySlVXQ25MWU04c0F1bUJVTV9xMmJyRWRxWFVlUWZTTnhmVkhxT2JqdFd6cS1XLTFzNi1WQ1NmelhSMkRJNXlkVlZDWGR6U29oQm1yUklZandYQVZfYkd4cVhPY0M3MUtwMXJ4Q2RLSWdjUXpZRUZ2YnZ6VE1sR3FCUmlSY1lsRlBnZXFmbmRweS05bXpLUlR6Y1pBMGpsLTUtSUhVWkVYeE5xemdhTGZKaENYVkE5UFIwUVBlems3cTRSSTE1OUdHSDJ6QVdjWEpDV0h3Rlo0NDI1UmlWRFpIUnhtWEFWdjRFMU9kVFAycE5iWDJKQWtfU1RfRGdhMkptU2lkU1VDSWJqRWZJcFlPVXN3bnNwU1hGcnNvV01hd2IzbktOdF9rNWI5WDIyY1hiRllhZURxb3N6LUNPT0VqTDMxWDZycHhMdi0xOVFEMXFjUjVHQjg1ZmJuRWt3UThkekp3NXU1cmZyQW5vR19mNUc3bHRNbVJISGZSbm55d01kTlVFVVBSM0tMeHVINnFLYlhTRGpmdkhhRWVZV3AwNUZVMDNkUkhjc3VpYlRHcEZDUW9yckRJZ3ZvZ01wa2xYZ2NVRkE0SENWemVjWFRuRFcxVmQtbHZReGVQX2dFMnVObWJoc1lEeU9RUC1iaW5VdzVQTTJQOURuM3psZDFiTTQ0V1JQZy0yMjB6MWVEbHgxWTlDZjU4Tk11bm8zODREV1dnWTFjZ1V5bHZlWHFMVHMyd1BEdF9halNLanM3TFdFdkZhYl84dGdORXpIekxLdnpibzJNSU5ZS0ZxM1VwOWttWmlOS3BhaXZPZVQybEY5bU1QSHNHY2VIbzBNdkZEVW5PUzRkNjl4WllBTmxJV1NUYllmNlNMUXhVcGhYQmtHeS1VRXd0X2Q3TV9VVkY4WVJnUEJGaG1LTFhKMGd2cnNBZndFTFpBeS1YX29kWmNKSHktTUpCWnVTUTVONnRWblg2SVhRYzdoczNSMGxrU0hqSUFhOW5haHY3LVZkRWp3Y05kcEF2UTI1RUxxUlRHaGJqUmRIakRHUEQtTWY5REFpUHczVUVpYktMMFlCcUVDYlAxa3hsc1dFMEtJek5qSEZVclJ3SFRkTVBkU0Rrekp2bXBKVlNVZ1NMYlVFeEdMT3JROW1TRE1JYmxfd0xTai1LYWZ2Y2FZbUJPNmd3bm9NR2JkU1ZxeDVweVY4WEV5c2N4U2xlVEJnRENfSmlxWnhUTmFsV3RaZHE4Zk9lV1A4azJzQzhweWpEMXVvaHRVdS1tZ3JFSkpaSkxITlplaHg2S3IzTUhtMDUzYTFXTk15eXFhdW5iSndnaGsxQWlBclYzZjhrSUtMVEl1dEY2SmkwUXZUanNNNFF4dmNwTFJ2RVJpRGIwdTNzTExFemRIMDA4c3VzUXVRSG9LNV9CTVlIc3IyVjV3TXZkTlJ3aTZycU9pVnh1VzFkZ0Fpa0Q2Wmpmb0RQZFhZaHlpUUhqWDY4VDBEc3pjOEJPbmdzV010VGJndkxRd05tLVlQYUJjRjVKSmp4cE9DTnBzcFVtRTlpRVVwWHJRZWY3WFlMRFpiQnhkMlNwdkRZOVh2VEV2dnM3XzZGQl9oOExBRnFDdXp0TGJFVHhBaFp6Wmt5ZTlYM3VIOHM4RE96RklEZ0F2bzR3ZWJibHF0ZDdQOTAzUmZqOG9ZZ0hXbXBYRzVfcWxvRC00X2dmMzdFR28yMWJHVzV2XzF6cVRMWkNxVFRiNm8tMWNmQ1AxVlNsNERXYV9HazlsWURPUEZId3A4NjA4VTV6MUVTX21oQnNTdl9RT1ZKNnQ0R3ZCVjRFY0dZUlc3aTV4aWNweW5kN0lIT3dJM2l0dW9XU2ZOYTNkM3VZWUJXYW1BMTVjdVNyX1Q5UWY2Y1RfOUlvdVRiMWNRZnNHaDdPRDNueUtROGswZ1ZrZzlsTDZGeE12aDFwV0k5MHQya0VmWXlndWFHQUZUdFBhdkJ0blNQU3pOejlIb1h5Q3ZiQmVhVTRsX0Q1Q29MOS15Yi1uTW15V21kSHNDVjQ2MWVtbUxSVzdZaVpEejFWR2FoS0UxSmJxbGRJeEQxamQ4blBEOUZPQnFCVndQRTFKNnNzYVY0M05hdlJEU0U2UGIzcU5OaE9vTFFlVnFXZ3ljV3BYTGlOVWNXcmlCTnFQclhtQ3gxU3BSSXhxZmhJSFcxbDYzQ3RXZVdOVkowNm91WWZoeW81ekVaRElSY05mTHY2bHhFNGk0aG1sNjhfQm5xc2dTWFoteTNBbnZuZkFoVTVFVjBUdVJNX0NrdHFPaldRd19LT2c1LWMtY0tGQldhSHBReDF0cERxYXFLQTkxWHJYLTh6dXFpSExCd3lRbERVUzBxa3p4dWd3OVM2dTFnUk13YXJhdG9EOEc3ZFBqWHlXbGNLQ2ljZU1RWjlydVBKT3B3NDFxd0hmZDVaV09MMWFrVE1YMFA1Y25HSFItZ1NUcDJVMVBTekFyOFFHQk00N0ZGSjk4T0wzeDhZV0tyQjlMMXNkX2E5OXZmT0xuZFFQc0lYZ3FEWVhSa2pqYW1CR043RDNtVWFRRndRUllFdGphRDcuSlpSdlFDN2pGeG80TG9OQzh3SWJWWVZXSlNRNm1zZ2FQRDJFak5PVjJHZU9hSnc1MXQ1UkU5TmRvaVB6MklodjJybDV1YU5JSGR5SjRQUEdsNmxKN1E="/><input type="hidden" name="_eventId" value="submit"/><input type="hidden" name="geolocation"/><input type="hidden" name="deviceFingerprint"/><script type="text/javascript">
+                            let client = new ClientJS();
+                            let fingerprint = client.getFingerprint();
+                            $('[name="deviceFingerprint"]').val(fingerprint);
+                        </script>
+                    </section>
+
+                    <button
+                class="mdc-button mdc-button--raised btn btn-primary btn-primary flex-shrink-0"
+                name="submitBtn"
+                id="submitBtn"
+                accesskey="l"
+                type="submit">
+            <i class="mdi fas mdi-login fa-shield-alt" aria-hidden="true"></i>
+            <span class="mdc-button__label">Se connecter</span>
+        </button>
+
+        </div>
+            </form>
+
+            <hr class="my-4"/><div>
+                <div id="pmlinks" class="my-2">
+        <div class="mt-2">
+            <span class="mdi mdi-account-question" aria-hidden="true"></span>
+            <span><a href="https://ent.uca.fr/compte/activationCompte/">Première connexion ?</a><a href="https://ent.uca.fr/compte/password/forgotPwd">Mot de passe oublié ?</a></span>
+        </div>
+    </div>
+                </div>
+
+            <script type="text/javascript">
+                /*<![CDATA[*/
+                var i = "Veuillez patienter\u2026"
+                var j = "Se connecter"
+                    /*]]>*/
+                    $(window).on('pageshow', function () {
+                        $(':submit').prop('disabled', false);
+                        $(':submit').attr('value', j);
+                    });
+                $(document).ready(function () {
+                    $("#fm1").submit(function () {
+                        $(":submit").attr("disabled", true);
+                        $(":submit").attr("value", i);
+                        return true;
+                    });
+                });
+            </script>
+        </div>
+
+        <div>
+            <div id="sidebar">
+            <div class="sidebar-content">
+                <p>Pour des raisons de sécurité, veuillez vous <a href="logout">déconnecter</a> et fermer votre navigateur lorsque vous avez fini d’accéder aux services authentifiés.</p>
+            </div>
+        </div>
+        </div>
+    </div>
+        </section>
+        </div>
+</div>
+        </main>
+    </div>
+
+    <footer class="py-3 d-flex justify-content-center align-items-center cas-footer">
+    <span id="copyright" class="me-2 d-inline-block">Copyright &copy; 2005&ndash;2025 Apereo, Inc.</span>
+    <span id="poweredBy" class="px-3 d-inline-block">
+        <span>Powered by </span><a href="https://github.com/apereo/cas">Apereo CAS</a>
+    </span>
+    <code class="version">7.2.7 27/09/2025 01:34</code>
+    <code class="host pl-2">🖥️ cas01</code>
+</footer>
+
+</body>
+
+</html>
